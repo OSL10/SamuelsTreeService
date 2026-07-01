@@ -391,7 +391,7 @@ def page_hero(crumbs, title, sub, img=None, alt="", tag="", eyebrow=""):
         <img src="assets/img/{img}" alt="{alt}" loading="eager" width="1000" height="667">
         {f'<span class="tag">{tag}</span>' if tag else ''}
       </div>'''
-        return f'''<section class="page-hero split">
+        return f'''<section class="page-hero has-photo">
     <div class="wrap-wide ph-grid">
       {left}
       {card}
