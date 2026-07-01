@@ -214,8 +214,20 @@ SERVICES = [
 SVC_BY_SLUG = {s["slug"]: s for s in SERVICES}
 
 REVIEWS = [
-    ("Debra R.", "We had a great experience with Samuel's Tree Service. They came out on time, did the job efficiently and left our yard neat and tidy.", "Google Review"),
-    ("Carolyn N.", "A very good experience. I highly recommend Samuel's Tree Service. They are prompt and efficient.", "Google Review"),
+    ("Roger B.",  "They were GREAT! 5 stars is the most that I can give them here… they earned twice that! Every last one of them was on time, quick, efficient, professional, helpful, very friendly and very, very polite. The owner is not the kind of guy that sits back and let the crew do the work — he was in the middle of it, in the bucket, running the chain saw. They were half the cost of the other companies that quoted the job. Worth EVERY PENNY. The BEST investment I've made into my house.", "Yellow Pages · Verified"),
+    ("Jeff N.",   "Once again they did an outstanding job. On time, efficient, safe work and a complete cleanup when they were finished. I will definitely use them again.", "Birdeye Google review"),
+    ("Bruce H.",  "This is the 4th time we have used Samuel's Tree Service and it has always been excellent!", "Denton, TX · Verified"),
+    ("Bobby W.",  "It was very easy — we contacted y'all and you guys sent someone out the next day. I would definitely recommend giving Samuel's a call.", "Denton, TX · Verified"),
+    ("Stacy M.",  "It was a great experience and they cleaned up everything. I wouldn't recommend anyone other than Samuel's Tree Service.", "Denton, TX · Verified"),
+    ("Debra R.",  "We had a great experience with Samuel's Tree Service. They came out on time, did the job efficiently and left our yard neat and tidy.", "Google review"),
+    ("Carolyn N.","A very good experience. I highly recommend Samuel's Tree Service. They are prompt and efficient.", "Google review"),
+    ("Carlo G.",  "The service and the people were wonderful to work with and I highly recommend them.", "Denton, TX · Verified"),
+    ("Raleigh S.","The good thing about Samuel's is that they listen to what you say and they do it right.", "Denton, TX · Verified"),
+    ("Jay",       "It was great, they got me scheduled quick, the work was done great, the yard was cleaned up and it was perfect.", "Denton, TX · Verified"),
+    ("Lucy R.",   "They came out and trimmed a few trees for us and we love the work. Thank you.", "Yellow Pages · Verified"),
+    ("Angi Customer",     "The efficiency of the service is not the only reason to rate this company beyond 5 stars. It was the professionalism and the PERSONALITY of the man behind the service. Simply the best businessman I have ever had the pleasure of doing business with.", "Angi · Verified"),
+    ("Angi Customer",     "Excellent service, efficient, and left my property cleaner than when they showed up. Great group of guys! Very professional — definitely recommend to anyone!", "Angi · Verified"),
+    ("Nextdoor Neighbor", "Totally professional. The young men were very courteous and polite. Best customer service! I would highly recommend them if you need tree service of any kind.", "Nextdoor · Verified"),
 ]
 
 AWARDS = ["Best of Denton 2025", "Best of Denton 2024", "Best of Denton 2023",
@@ -398,7 +410,7 @@ def cta_band():
     <div class="cta-band reveal">
       <div class="bg"><img src="assets/img/tree-removal-2.jpg" alt="" loading="lazy"></div>
       <span class="eyebrow no-rule" style="justify-content:center;margin-bottom:1.2rem">Free estimates · {BIZ['area']}</span>
-      <h2>The tree isn't going to<br>get smaller.</h2>
+      <h2>One call.<br>Free bid. No pressure.</h2>
       <p>Tell us what you're looking at and we'll come give you a straight estimate — no pressure, no hidden fees, no charge for work you didn't authorize.</p>
       <div class="cta-actions">
         <a class="btn btn-primary btn-lg" href="contact.html">Get a Free Estimate {ICONS['arrow']}</a>
@@ -408,25 +420,60 @@ def cta_band():
   </div>
 </section>'''
 
+GOOGLE_G = ('<svg viewBox="0 0 48 48" aria-hidden="true">'
+            '<path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/>'
+            '<path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/>'
+            '<path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/>'
+            '<path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7C13.42 14.62 18.27 10.75 24 10.75z"/>'
+            '</svg>')
+
 def reviews_section():
-    cards = ""
-    for who, text, src in REVIEWS:
-        cards += f'''<div class="review reveal">
-      <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+    def card(who, text, src):
+        # First initials for avatar (handles single names, "Angi Customer", etc.)
+        parts = [p for p in who.split() if p]
+        av = (parts[0][0] + (parts[1][0] if len(parts) > 1 else "")).upper()
+        return f'''<article class="g-review">
+      <div class="gr-head">
+        <span class="gr-av" aria-hidden="true">{av}</span>
+        <div class="gr-who"><b>{who}</b><span>{src}</span></div>
+        <span class="gr-g" aria-label="Verified review">{GOOGLE_G}</span>
+      </div>
+      <div class="gr-stars" aria-label="5 out of 5 stars">★★★★★</div>
       <p>{text}</p>
-      <div class="who"><span class="av">{who[0]}</span><span><b>{who}</b><span>{src}</span></span></div>
-    </div>'''
-    return f'''<section>
+    </article>'''
+    # Duplicate cards so the horizontal auto-scroll loops seamlessly.
+    cards_seq = "".join(card(*r) for r in REVIEWS)
+    return f'''<section id="reviews">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">5.0 across 950+ reviews</span>
-      <h2 class="section-title">Denton keeps<br>calling us back.</h2>
-      <p>Five stars on Google across more than 950 reviews, an A+ with the BBB, and Best of Denton six years running. Here's a sample — read the rest on Google.</p>
+      <span class="eyebrow">Google reviews · live</span>
+      <h2 class="section-title">Five stars.<br>Nine-hundred-plus times.</h2>
+      <p>A 5.0 average across 950+ verified reviews on Google, Yellow Pages, Angi, and Nextdoor. An A+ with the BBB. Best of Denton, 2020 through 2025.</p>
     </div>
-    <div class="reviews">{cards}</div>
-    <div class="reveal" style="margin-top:2rem">
-      <a class="textlink" href="{BIZ['google']}" target="_blank" rel="noopener">Read all reviews on Google {ICONS['arrow']}</a>
+
+    <!-- LIVE-WIDGET SLOT: To replace the summary with a live Google Reviews
+         feed, sign up for an Elfsight, Trustindex, or Featurable widget for
+         Samuel's Tree Service and paste their embed script inside this div,
+         replacing the .g-summary block below. -->
+    <div class="g-summary reveal">
+      <span class="g-logo" aria-hidden="true">{GOOGLE_G}</span>
+      <div class="g-rating-wrap">
+        <b class="g-rating">5.0 <span class="g-star" aria-hidden="true">★</span></b>
+        <span class="g-count">Based on <b>950+</b> verified Google reviews</span>
+      </div>
+      <div class="g-summary-cta">
+        <a class="btn btn-primary" href="{BIZ['google']}" target="_blank" rel="noopener">Read all reviews on Google {ICONS['arrow']}</a>
+        <span class="g-verified">✓ Live Google Business Profile</span>
+      </div>
     </div>
+  </div>
+
+  <div class="review-track-wrap reveal" aria-label="Customer reviews carousel">
+    <div class="review-track" data-review-track>
+      <div class="review-track-inner">{cards_seq}{cards_seq}</div>
+    </div>
+    <div class="review-track-fade left"></div>
+    <div class="review-track-fade right"></div>
   </div>
 </section>'''
 
@@ -534,7 +581,6 @@ def page_home():
       <div class="split">
         <div class="split-media reveal-clip">
           <img src="assets/img/team.jpg" alt="The Samuel's Tree Service team accepting a Best of Denton award" loading="lazy">
-          <span class="tag">{ICONS['award']} Best of Denton 2024</span>
         </div>
         <div class="split-body">
           <span class="eyebrow reveal">Why Samuel's</span>
@@ -554,8 +600,8 @@ def page_home():
   <section>
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">The difference</span>
-        <h2 class="section-title">Six reasons Denton<br>keeps voting for us.</h2>
+        <span class="eyebrow">The standard</span>
+        <h2 class="section-title">Six things<br>we don't skip.</h2>
       </div>
       <div class="props">{prop_cards}</div>
     </div>
@@ -797,7 +843,7 @@ def page_gallery():
   <section class="page-hero">
     <div class="wrap-wide">
       <div class="crumbs reveal"><a href="index.html">Home</a><span class="sep">/</span><span>Past Work</span></div>
-      <h1 class="reveal">The work speaks<br>for itself.</h1>
+      <h1 class="reveal">Work that speaks<br>for itself.</h1>
       <p class="reveal">Real trees, real Denton-area properties, real before-and-afters. Tap any photo to see it full size.</p>
     </div>
   </section>
