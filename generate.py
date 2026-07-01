@@ -57,7 +57,7 @@ ICONS = {
 SERVICES = [
     {
         "slug": "tree-removal", "title": "Tree Removal", "icon": "crane",
-        "img": "tree-removal.jpg",
+        "img": "tree-removal-action.jpg",
         "tag": "Crane-assisted · fully insured",
         "short": "Safe felling, low-impact lowering, and complete debris haul-off for dead, hazardous, or unwanted trees.",
         "hero_sub": "Dead and structurally compromised trees don't wait for a convenient moment. Neither do we.",
