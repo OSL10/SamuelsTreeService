@@ -506,32 +506,38 @@ section.tone-slate::after, section.tone-moss::after, section.tone-forest::after 
 /* =========================================================================
    FAQ VIDEOS — lite-embed grid (thumbnail first, iframe on click)
    ========================================================================= */
-.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.75rem); }
+/* These are vertical (Shorts-format) recordings. YouTube's auto-thumbnails
+   pillarbox them into a 16:9 frame with blurred duplicate side panels --
+   cropping the card to the real 9:16 content strip removes the pillarbox
+   entirely and gives a clean, tightly-composed portrait thumbnail. */
+.video-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1rem, 1.6vw, 1.5rem); }
 .vid-card { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); display: flex; flex-direction: column; }
-.vid-thumb { position: relative; display: block; width: 100%; aspect-ratio: 16/9; padding: 0; overflow: hidden; isolation: isolate; background: var(--bg-deep); }
-.vid-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease), filter .4s; }
-.vid-thumb::after { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(6,9,6,.65), rgba(6,9,6,.05) 55%); }
+.vid-thumb { position: relative; display: block; width: 100%; aspect-ratio: 9/16; padding: 0; overflow: hidden; isolation: isolate; background: var(--bg-deep); }
+.vid-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .6s var(--ease), filter .4s; }
+.vid-thumb::after { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(6,9,6,.7), rgba(6,9,6,.05) 40%, transparent 60%); }
 .vid-thumb:hover img { transform: scale(1.05); }
 .vid-tag {
-  position: absolute; top: .8rem; left: .8rem; z-index: 2;
+  position: absolute; top: .7rem; left: .7rem; z-index: 2;
   background: rgba(8,11,8,.72); backdrop-filter: blur(6px);
-  border: 1px solid var(--line); border-radius: 100px; padding: .35rem .75rem;
-  font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--leaf);
+  border: 1px solid var(--line); border-radius: 100px; padding: .3rem .65rem;
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .07em; text-transform: uppercase; color: var(--leaf);
 }
+/* Play affordance sits in the bottom-left corner, not dead-center --
+   these are talking-head shots, and a centered button lands on the face. */
 .vid-play {
-  position: absolute; inset: 0; z-index: 2; margin: auto;
-  width: 60px; height: 60px; border-radius: 50%;
+  position: absolute; left: .8rem; bottom: .8rem; z-index: 2;
+  width: 46px; height: 46px; border-radius: 50%;
   background: rgba(143,209,79,.92); color: #08110A;
   display: grid; place-items: center;
   transition: transform .3s var(--ease), background .3s var(--ease);
 }
-.vid-play svg { width: 22px; height: 22px; margin-left: 3px; }
+.vid-play svg { width: 18px; height: 18px; margin-left: 2px; }
 .vid-thumb:hover .vid-play { transform: scale(1.1); background: var(--leaf); }
-.vid-card iframe { width: 100%; aspect-ratio: 16/9; border: 0; display: block; }
-.vid-body { padding: 1.3rem 1.4rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
-.vid-body h3 { font-size: 1.15rem; margin-bottom: .5rem; }
-.vid-body p { font-size: .92rem; color: var(--ink-dim); margin-bottom: .5rem; }
-.vid-body .vid-blurb { font-size: .85rem; color: var(--muted); margin-bottom: 0; margin-top: auto; padding-top: .6rem; border-top: 1px solid var(--line-soft); }
+.vid-card iframe { width: 100%; aspect-ratio: 9/16; border: 0; display: block; background: #000; }
+.vid-body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
+.vid-body h3 { font-size: 1.02rem; margin-bottom: .45rem; line-height: 1.25; }
+.vid-body p { font-size: .87rem; color: var(--ink-dim); margin-bottom: .5rem; }
+.vid-body .vid-blurb { font-size: .8rem; color: var(--muted); margin-bottom: 0; margin-top: auto; padding-top: .6rem; border-top: 1px solid var(--line-soft); }
 
 /* =========================================================================
    REVIEWS — Google-styled summary + horizontal review track
@@ -749,6 +755,7 @@ html.anim .hero.ready .lift { opacity: 1; transform: none; }
   .svc-card.span-3, .svc-card.span-2 { grid-column: span 3; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
   .steps { grid-template-columns: repeat(2,1fr); }
+  .video-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 900px) {
   .nav-links, .nav-phone { display: none; }
@@ -787,7 +794,7 @@ html.anim .hero.ready .lift { opacity: 1; transform: none; }
   .footer-top { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
   .lightbox .lb-nav { width: 42px; height: 42px; }
-  .video-grid { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* =========================================================================

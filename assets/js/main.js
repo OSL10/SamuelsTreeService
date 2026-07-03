@@ -110,6 +110,23 @@
     var btn = card.querySelector(".vid-thumb");
     var vid = card.getAttribute("data-yt");
     if (!btn || !vid) return;
+
+    // maxresdefault doesn't exist for every video -- YouTube serves a
+    // 120x90 gray placeholder instead of a real 404, so check dimensions
+    // rather than relying on the error event.
+    var img = btn.querySelector("img");
+    if (img) {
+      var swapToFallback = function () {
+        var fallback = img.getAttribute("data-fallback");
+        if (fallback && img.src !== fallback) img.src = fallback;
+      };
+      img.addEventListener("error", swapToFallback);
+      img.addEventListener("load", function () {
+        if (img.naturalWidth && img.naturalWidth <= 120) swapToFallback();
+      });
+      if (img.complete && img.naturalWidth && img.naturalWidth <= 120) swapToFallback();
+    }
+
     function play() {
       var iframe = document.createElement("iframe");
       iframe.src = "https://www.youtube.com/embed/" + vid + "?autoplay=1&rel=0";

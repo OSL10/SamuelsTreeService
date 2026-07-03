@@ -333,7 +333,7 @@ def nav(active):
     </ul>
     <div class="nav-cta">
       <a class="nav-phone" href="tel:{BIZ['tel']}">{ICONS['phone']}{BIZ['phone']}</a>
-      <a class="btn btn-primary" href="contact.html">Get a Free Estimate {ICONS['arrow']}</a>
+      <a class="btn btn-primary" href="contact.html">Free Estimate {ICONS['arrow']}</a>
       <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
     </div>
   </nav>
@@ -936,10 +936,15 @@ def page_gallery():
 def page_faq_videos():
     cards = ""
     for i, (vid, title, question, tag, blurb) in enumerate(FAQ_VIDEOS):
-        thumb = f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
+        # maxresdefault is the true 1280x720 source -- these are vertical
+        # Shorts, so the card crops to the real 9:16 content strip and
+        # needs all the source resolution it can get. Not every video has
+        # a maxres thumbnail, so main.js falls back to hqdefault on error.
+        thumb = f"https://i.ytimg.com/vi/{vid}/maxresdefault.jpg"
+        thumb_fallback = f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
         cards += f'''<article class="vid-card reveal" data-video-card data-yt="{vid}">
       <button class="vid-thumb" type="button" aria-label="Play: {title}">
-        <img src="{thumb}" alt="{title}" loading="lazy">
+        <img src="{thumb}" data-fallback="{thumb_fallback}" alt="{title}" loading="lazy">
         <span class="vid-tag">{tag}</span>
         <span class="vid-play" aria-hidden="true">{ICONS['play']}</span>
       </button>
