@@ -264,6 +264,43 @@ FAQ_VIDEOS = [
     ("GY5lD71vCC4", "Making a Tree Vanish",
      "This is how we make a tree completely VANISH.",
      "Removal", "A full-property removal — trunk, limbs, and stump — and how the site looks after."),
+    # Page 2 of the client's original video FAQ gallery
+    ("psiwZeqpP1c", "Why Who You Hire Matters",
+     "This is why it matters who is working on your trees.",
+     "Hiring", "The difference in outcome between a trained crew and a guy with a truck."),
+    ("pF7TU6GofGc", "What to Watch for in North Texas",
+     "This is what you need to look out for in North Texas.",
+     "Awareness", "Regional risks specific to this area's soil, storms, and tree species."),
+    ("QlQEkV6nuWU", "Pruning Young Trees",
+     "Here's what you need to know about pruning young trees.",
+     "Pruning", "Early structural cuts that shape a healthier tree for decades."),
+    ("eZC44yigL9A", "Tree Work and Property Value",
+     "What effect does tree work have on your property value?",
+     "Property Value", "How the right pruning or removal changes what a buyer sees."),
+    ("fQLbp84FACc", "Should You Remove That Stump?",
+     "When you should and shouldn't get a stump removed.",
+     "Removal", "Cases where grinding is worth it — and cases where it isn't."),
+    ("yQanHDlu2Mw", "How Long Tree Work Takes",
+     "Here's how long it usually takes to get tree work done.",
+     "Planning", "A realistic timeline from first call to a cleaned-up yard."),
+    ("x0cVZP1uxFw", "Best Trees for North Texas",
+     "These are the trees that do the best here in North Texas.",
+     "Identifying", "Species that hold up to this area's heat, clay soil, and storms."),
+    ("snVF96Coz9w", "How a Free Estimate Works",
+     "Learn more about a free estimate.",
+     "Estimates", "What happens on-site before you're handed a number."),
+    ("oDs7tTQmSFI", "Common Tree Myths",
+     "Here's a couple things everybody has wrong about trees.",
+     "Myths", "Widely believed tree-care advice that isn't actually true."),
+    ("OXT3QokZhl8", "Why Insurance Matters",
+     "Let's talk about insurance and why it's important.",
+     "Hiring", "What a lack of coverage on the crew's end could cost you."),
+    ("45MA62kXfco", "What's in a Free Proposal",
+     "This is what goes into a free proposal on tree work for your property.",
+     "Estimates", "The line items and reasoning behind a written bid."),
+    ("Nt8t-5SBAQ0", "Get an Arborist Before You Buy",
+     "This is why you should have a certified arborist look over the property before you buy.",
+     "Buying a Home", "Why a pre-purchase tree inspection can save a new owner real money."),
 ]
 
 # ---------------------------------------------------------------- shared chunks
@@ -929,7 +966,7 @@ def page_faq_videos():
         "Answers, on video.",
         "Real questions Denton homeowners ask us — stumps, storms, sick trees, property lines, and how to spot a bad hire. Straight from the crew.",
         img="tree-trimming.jpg", alt="A Samuel's Tree Service climber working high in a tree canopy in Denton",
-        tag=f"{ICONS['leaf']} 9 short videos")
+        tag=f"{ICONS['leaf']} {len(FAQ_VIDEOS)} short videos")
     return head_html + nav("faq") + f'''
 <main>
   {hero}
