@@ -4,16 +4,24 @@
    ========================================================================= */
 
 :root {
-  /* color */
-  --bg:        #0C110D;   /* forest near-black */
-  --bg-2:      #0F140F;
-  --surface:   #141B14;
-  --surface-2: #1A2319;
+  /* color — one bright accent (--leaf); everything else is tonal variation
+     in the same near-black + green + warm-cream family */
+  --bg:        #0C110D;   /* forest near-black — the base */
+  --bg-2:      #0F140F;   /* a touch lighter for footer/marquee */
+  --bg-deep:   #060A07;   /* truly darker — visible depth break */
+  --surface:   #141B14;   /* default card */
+  --surface-2: #1A2319;   /* alt card */
+  --slate:     #22292A;   /* warm dark grey — clearly not green */
+  --slate-2:   #2C3436;
+  --moss:      #1B2C21;   /* clearly greener surface tone */
+  --moss-2:    #22382A;
+  --forest:    #26402A;   /* deeper mid-tone green for feature cards */
   --ink:       #F2EEE3;   /* warm cream */
   --ink-dim:   #D5D6C9;
   --muted:     #98A892;
   --line:      rgba(242, 238, 227, 0.12);
   --line-soft: rgba(242, 238, 227, 0.07);
+  --line-warm: rgba(200, 210, 190, 0.10);
   --leaf:      #8FD14F;   /* THE accent — CTAs, one rule, stat numbers, status */
   --leaf-deep: #5C9A2E;
   --amber:     #E6B450;   /* awards only */
@@ -113,6 +121,40 @@ section { padding-block: var(--section-y); position: relative; }
 .section-head p { margin-top: 1.1rem; max-width: 60ch; }
 
 .grid { display: grid; gap: clamp(1rem, 2.2vw, 1.75rem); }
+
+/* Section tonal variants — clearly visible backgrounds break up the monotony.
+   Each tone stays in the same value family so hierarchy doesn't shift. */
+section.tone-slate  {
+  background:
+    radial-gradient(50% 60% at 80% 20%, rgba(255,255,255,.03), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--slate) 45%, var(--slate) 100%);
+}
+section.tone-moss   {
+  background:
+    radial-gradient(55% 60% at 20% 30%, rgba(143,209,79,.06), transparent 65%),
+    linear-gradient(180deg, var(--bg) 0%, var(--moss) 40%, var(--moss) 100%);
+}
+section.tone-forest {
+  background:
+    radial-gradient(60% 55% at 50% 50%, rgba(143,209,79,.05), transparent 70%),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--forest) 50%, var(--bg-deep) 100%);
+}
+section.tone-deep   { background: var(--bg-deep); }
+section.tone-slate + section:not([class*="tone-"]),
+section.tone-moss  + section:not([class*="tone-"]),
+section.tone-forest+ section:not([class*="tone-"]),
+section.tone-deep  + section:not([class*="tone-"]) { background: var(--bg); }
+
+/* Divider glow between tonal sections — a hairline of leaf for continuity */
+section.tone-slate, section.tone-moss, section.tone-forest {
+  position: relative; isolation: isolate;
+}
+section.tone-slate::after, section.tone-moss::after, section.tone-forest::after {
+  content: ""; position: absolute; left: 50%; top: 0; width: min(320px, 40vw);
+  height: 1px; transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--leaf-deep), transparent);
+  opacity: .5; pointer-events: none;
+}
 
 /* ---------- buttons ---------- */
 .btn {
@@ -355,6 +397,9 @@ section { padding-block: var(--section-y); position: relative; }
    ========================================================================= */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
 .stat { background: var(--bg); padding: clamp(1.8rem,3vw,2.8rem); }
+.stat:nth-child(2) { background: linear-gradient(180deg, var(--slate), var(--bg)); }
+.stat:nth-child(3) { background: linear-gradient(180deg, var(--moss), var(--bg)); }
+.stat:nth-child(4) { background: linear-gradient(180deg, var(--surface-2), var(--bg-deep)); }
 .stat b { font-family: var(--display); font-weight: 500; font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1; color: var(--ink); letter-spacing: -.02em; display: block; }
 .stat b .accent { color: var(--leaf); }
 .stat .label { margin-top: .8rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
@@ -369,6 +414,9 @@ section { padding-block: var(--section-y); position: relative; }
   padding: 1.8rem; isolation: isolate; border: 1px solid var(--line);
   background: var(--surface);
 }
+/* Slight tonal variety on the scrim behind service cards */
+.svc-card:nth-child(3n+2)::after { background: linear-gradient(to top, rgba(11,20,12,.94) 5%, rgba(22,33,26,.55) 45%, rgba(6,9,6,.15) 100%) !important; }
+.svc-card:nth-child(3n+3)::after { background: linear-gradient(to top, rgba(8,13,10,.94) 5%, rgba(31,46,34,.55) 45%, rgba(6,9,6,.15) 100%) !important; }
 .svc-card.span-3 { grid-column: span 3; }
 .svc-card.span-2 { grid-column: span 2; }
 .svc-card.tall { min-height: 460px; }
@@ -407,7 +455,11 @@ section { padding-block: var(--section-y); position: relative; }
    FEATURE LIST (value props as cards)
    ========================================================================= */
 .props { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(1rem,1.6vw,1.4rem); }
-.prop { padding: 2rem 1.8rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(160deg, var(--surface), var(--bg)); transition: transform .4s var(--ease), border-color .4s; }
+.prop { padding: 2rem 1.8rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(160deg, var(--surface), var(--bg)); transition: transform .4s var(--ease), border-color .4s, background .4s; }
+.prop:nth-child(6n+2) { background: linear-gradient(155deg, var(--slate-2), var(--slate)); border-color: var(--line-warm); }
+.prop:nth-child(6n+3) { background: linear-gradient(150deg, var(--moss-2), var(--moss)); border-color: rgba(143,209,79,.12); }
+.prop:nth-child(6n+5) { background: linear-gradient(160deg, var(--slate), var(--slate-2)); border-color: var(--line-warm); }
+.prop:nth-child(6n+6) { background: linear-gradient(150deg, var(--forest), var(--moss-2)); border-color: rgba(143,209,79,.2); }
 .prop:hover { transform: translateY(-4px); border-color: rgba(143,209,79,.4); }
 .prop .ico { width: 50px; height: 50px; border-radius: 13px; background: rgba(143,209,79,.12); display: grid; place-items: center; color: var(--leaf); margin-bottom: 1.3rem; }
 .prop .ico svg { width: 24px; height: 24px; }
@@ -458,8 +510,8 @@ section { padding-block: var(--section-y); position: relative; }
   display: flex; align-items: center; gap: clamp(1.4rem, 3vw, 2.6rem);
   flex-wrap: wrap;
   padding: clamp(1.6rem, 3vw, 2.4rem);
-  border: 1px solid var(--line); border-radius: var(--radius-lg);
-  background: linear-gradient(160deg, var(--surface), var(--bg));
+  border: 1px solid var(--line-warm); border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, var(--forest), var(--slate) 65%, var(--bg-deep));
   margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 .g-summary .g-logo { width: 52px; height: 52px; flex-shrink: 0; }
@@ -498,6 +550,9 @@ section { padding-block: var(--section-y); position: relative; }
   background: var(--surface);
   display: flex; flex-direction: column;
 }
+.review-track-inner > .g-review:nth-child(4n+2) { background: linear-gradient(160deg, var(--moss), var(--surface)); }
+.review-track-inner > .g-review:nth-child(4n+3) { background: linear-gradient(160deg, var(--slate), var(--surface)); border-color: var(--line-warm); }
+.review-track-inner > .g-review:nth-child(4n+4) { background: linear-gradient(160deg, var(--forest), var(--surface-2)); border-color: rgba(143,209,79,.14); }
 .gr-head { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; }
 .gr-av { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(140deg, #8FD14F, #5C9A2E); color: #08110A; display: grid; place-items: center; font-family: var(--display); font-weight: 600; font-size: 1.05rem; flex-shrink: 0; letter-spacing: -.01em; }
 .gr-who { flex: 1; min-width: 0; }

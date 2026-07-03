@@ -443,7 +443,7 @@ def reviews_section():
     </article>'''
     # Duplicate cards so the horizontal auto-scroll loops seamlessly.
     cards_seq = "".join(card(*r) for r in REVIEWS)
-    return f'''<section id="reviews">
+    return f'''<section id="reviews" class="tone-moss">
   <div class="wrap">
     <div class="section-head reveal">
       <span class="eyebrow">Google reviews · live</span>
@@ -553,7 +553,7 @@ def page_home():
     </div>
   </div>
 
-  <section>
+  <section class="tone-deep">
     <div class="wrap">
       <div class="stats reveal">
         <div class="stat"><b data-count="24" data-years>24</b><div class="label">Years in business</div></div>
@@ -576,7 +576,7 @@ def page_home():
     </div>
   </section>
 
-  <section>
+  <section class="tone-slate">
     <div class="wrap">
       <div class="split">
         <div class="split-media reveal-clip">
@@ -647,7 +647,7 @@ def page_about():
     </div>
   </section>
 
-  <section>
+  <section class="tone-deep">
     <div class="wrap">
       <div class="stats reveal">
         <div class="stat"><b data-years>24</b><div class="label">Years serving Denton</div></div>
@@ -658,7 +658,7 @@ def page_about():
     </div>
   </section>
 
-  <section>
+  <section class="tone-slate">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">What we stand on</span>
@@ -712,7 +712,7 @@ def page_services():
     </div>
   </section>
 
-  <section>
+  <section class="tone-moss">
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">How it goes</span>
