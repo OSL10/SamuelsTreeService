@@ -105,6 +105,23 @@
     requestAnimationFrame(tick);
   }
 
+  /* ---------------- FAQ video cards (lite-embed: thumb -> iframe on click) ---------------- */
+  document.querySelectorAll("[data-video-card]").forEach(function (card) {
+    var btn = card.querySelector(".vid-thumb");
+    var vid = card.getAttribute("data-yt");
+    if (!btn || !vid) return;
+    function play() {
+      var iframe = document.createElement("iframe");
+      iframe.src = "https://www.youtube.com/embed/" + vid + "?autoplay=1&rel=0";
+      iframe.title = btn.getAttribute("aria-label") || "YouTube video";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      iframe.loading = "lazy";
+      btn.replaceWith(iframe);
+    }
+    btn.addEventListener("click", play);
+  });
+
   /* ---------------- Gallery lightbox ---------------- */
   var gItems = Array.prototype.slice.call(document.querySelectorAll("[data-lightbox]"));
   if (gItems.length) {

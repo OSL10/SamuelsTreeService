@@ -504,6 +504,36 @@ section.tone-slate::after, section.tone-moss::after, section.tone-forest::after 
 .lightbox .lb-cap { position: absolute; bottom: 1.5rem; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: .8rem; color: var(--muted); letter-spacing: .06em; }
 
 /* =========================================================================
+   FAQ VIDEOS — lite-embed grid (thumbnail first, iframe on click)
+   ========================================================================= */
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.75rem); }
+.vid-card { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); display: flex; flex-direction: column; }
+.vid-thumb { position: relative; display: block; width: 100%; aspect-ratio: 16/9; padding: 0; overflow: hidden; isolation: isolate; background: var(--bg-deep); }
+.vid-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease), filter .4s; }
+.vid-thumb::after { content:""; position:absolute; inset:0; background: linear-gradient(to top, rgba(6,9,6,.65), rgba(6,9,6,.05) 55%); }
+.vid-thumb:hover img { transform: scale(1.05); }
+.vid-tag {
+  position: absolute; top: .8rem; left: .8rem; z-index: 2;
+  background: rgba(8,11,8,.72); backdrop-filter: blur(6px);
+  border: 1px solid var(--line); border-radius: 100px; padding: .35rem .75rem;
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--leaf);
+}
+.vid-play {
+  position: absolute; inset: 0; z-index: 2; margin: auto;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: rgba(143,209,79,.92); color: #08110A;
+  display: grid; place-items: center;
+  transition: transform .3s var(--ease), background .3s var(--ease);
+}
+.vid-play svg { width: 22px; height: 22px; margin-left: 3px; }
+.vid-thumb:hover .vid-play { transform: scale(1.1); background: var(--leaf); }
+.vid-card iframe { width: 100%; aspect-ratio: 16/9; border: 0; display: block; }
+.vid-body { padding: 1.3rem 1.4rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.vid-body h3 { font-size: 1.15rem; margin-bottom: .5rem; }
+.vid-body p { font-size: .92rem; color: var(--ink-dim); margin-bottom: .5rem; }
+.vid-body .vid-blurb { font-size: .85rem; color: var(--muted); margin-bottom: 0; margin-top: auto; padding-top: .6rem; border-top: 1px solid var(--line-soft); }
+
+/* =========================================================================
    REVIEWS — Google-styled summary + horizontal review track
    ========================================================================= */
 .g-summary {
@@ -743,6 +773,7 @@ html.anim .hero.ready .lift { opacity: 1; transform: none; }
   .gallery-grid { grid-template-columns: repeat(6,1fr); }
   .col-6,.col-4,.col-8,.col-12 { grid-column: span 6; }
   .gal-item.col-6,.gal-item.col-4,.gal-item.col-8 { aspect-ratio: 16/10; }
+  .video-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 620px) {
   :root { --section-y: 4rem; }
@@ -756,6 +787,7 @@ html.anim .hero.ready .lift { opacity: 1; transform: none; }
   .footer-top { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
   .lightbox .lb-nav { width: 42px; height: 42px; }
+  .video-grid { grid-template-columns: 1fr; }
 }
 
 /* =========================================================================

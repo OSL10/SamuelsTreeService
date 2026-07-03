@@ -46,6 +46,7 @@ ICONS = {
     "mail": ic('<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/>'),
     "fb": ic('<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>'),
     "chev": ic('<polyline points="6 9 12 15 18 9"/>'),
+    "play": ic('<polygon points="8 5 19 12 8 19 8 5"/>'),
     "scissors": ic('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>'),
     "truck": ic('<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'),
     "bolt": ic('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'),
@@ -233,6 +234,38 @@ REVIEWS = [
 AWARDS = ["Best of Denton 2025", "Best of Denton 2024", "Best of Denton 2023",
           "Best of Denton 2022", "Best of Denton 2021", "Best of Denton 2020"]
 
+# ---------------------------------------------------------------- FAQ videos
+# Real YouTube IDs scraped from samuelstreeservice.com/tree-videos-faq/
+FAQ_VIDEOS = [
+    ("n4dojUVpYVU", "Common North Texas Trees",
+     "Here's all of the most common trees that you will see here in North Texas!",
+     "Identifying", "Know what's in your yard before you know what to do with it."),
+    ("qR3-X--72H4", "Is My Tree Sick?",
+     "How to tell if your trees are sick or unhealthy.",
+     "Diagnosing", "The visible signs a homeowner can spot before it's too late."),
+    ("iMDqni8pdA8", "Storm-Resilient Trees",
+     "Here's everything you need to know about how to make your trees more storm resilient.",
+     "Prevention", "Simple pruning choices that reduce failure in the next big wind."),
+    ("94a3t9slEF0", "Sharing a Tree with a Neighbor",
+     "What can I do if I share a tree with my neighbors?",
+     "Property Lines", "Who owns the limbs, who owes the removal, and how to handle it."),
+    ("AbAyusVhGus", "The Forgotten Part of a New Pool",
+     "This is one of the most FORGOTTEN about aspects of getting a pool.",
+     "Planning", "The tree question that gets missed until construction starts."),
+    ("CBWAtvQicJI", "Watch Out for the Chuck in a Truck",
+     "Be Careful Who You Hire! Look out for CHUCK in a TRUCK!",
+     "Hiring", "How to spot the unlicensed, uninsured guys before you cut the check."),
+    ("wFLFvHN68Ok", "Removing a Stump Without Grinding",
+     "How do you get rid of a tree stump if it can't be ground down?",
+     "Removal", "The alternative when grinding isn't an option."),
+    ("PO95caRaiNo", "Why the Stump Is Back",
+     "I had this stump completely removed and now it's BACK? What is going on?!",
+     "Removal", "What causes sucker growth and how to stop it for good."),
+    ("GY5lD71vCC4", "Making a Tree Vanish",
+     "This is how we make a tree completely VANISH.",
+     "Removal", "A full-property removal — trunk, limbs, and stump — and how the site looks after."),
+]
+
 # ---------------------------------------------------------------- shared chunks
 def nav(active):
     def cur(slug): return ' aria-current="page"' if active == slug else ''
@@ -258,6 +291,7 @@ def nav(active):
         <div class="dropdown" role="menu">{svc_items}</div>
       </li>
       <li><a class="nav-link" href="gallery.html"{cur('gallery')}>Past Work</a></li>
+      <li><a class="nav-link" href="faq-videos.html"{cur('faq')}>FAQ Videos</a></li>
       <li><a class="nav-link" href="contact.html"{cur('contact')}>Contact</a></li>
     </ul>
     <div class="nav-cta">
@@ -272,7 +306,8 @@ def nav(active):
     <a href="services.html">Services <small>03</small></a>
     {mobile_svc}
     <a href="gallery.html">Past Work <small>04</small></a>
-    <a href="contact.html">Contact <small>05</small></a>
+    <a href="faq-videos.html">FAQ Videos <small>05</small></a>
+    <a href="contact.html">Contact <small>06</small></a>
     <div class="m-cta">
       <a class="btn btn-primary btn-lg" href="contact.html">Get a Free Estimate {ICONS['arrow']}</a>
       <a class="btn btn-ghost btn-lg" href="tel:{BIZ['tel']}">{ICONS['phone']} {BIZ['phone']}</a>
@@ -299,6 +334,7 @@ def footer():
         <h5>Company</h5>
         <a href="about.html">About Us</a>
         <a href="gallery.html">Past Work</a>
+        <a href="faq-videos.html">FAQ Videos</a>
         <a href="contact.html">Free Estimates</a>
         <a href="contact.html">Specials &amp; Discounts</a>
         <a href="{BIZ['google']}" target="_blank" rel="noopener">Google Reviews</a>
@@ -859,6 +895,55 @@ def page_gallery():
 </main>
 ''' + footer() + SCRIPTS
 
+# ================================================================ FAQ VIDEOS
+def page_faq_videos():
+    cards = ""
+    for i, (vid, title, question, tag, blurb) in enumerate(FAQ_VIDEOS):
+        thumb = f"https://i.ytimg.com/vi/{vid}/hqdefault.jpg"
+        cards += f'''<article class="vid-card reveal" data-video-card data-yt="{vid}">
+      <button class="vid-thumb" type="button" aria-label="Play: {title}">
+        <img src="{thumb}" alt="{title}" loading="lazy">
+        <span class="vid-tag">{tag}</span>
+        <span class="vid-play" aria-hidden="true">{ICONS['play']}</span>
+      </button>
+      <div class="vid-body">
+        <h3>{title}</h3>
+        <p>{question}</p>
+        <p class="vid-blurb">{blurb}</p>
+      </div>
+    </article>'''
+
+    faq_ld = {
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": b}}
+            for _, _, q, _, b in FAQ_VIDEOS
+        ],
+    }
+    head_html = head(
+        "Tree Care FAQ Videos | Samuel's Tree Service, Denton TX",
+        "Short videos answering the tree-care questions Denton homeowners actually ask — removal, stumps, storm damage, sick trees, and hiring the right crew.",
+        og_img="assets/img/tree-trimming.jpg", jsonld=faq_ld)
+    hero = page_hero(
+        '<a href="index.html">Home</a><span class="sep">/</span><span>FAQ Videos</span>',
+        "Answers, on video.",
+        "Real questions Denton homeowners ask us — stumps, storms, sick trees, property lines, and how to spot a bad hire. Straight from the crew.",
+        img="tree-trimming.jpg", alt="A Samuel's Tree Service climber working high in a tree canopy in Denton",
+        tag=f"{ICONS['leaf']} 9 short videos")
+    return head_html + nav("faq") + f'''
+<main>
+  {hero}
+
+  <section>
+    <div class="wrap-wide">
+      <div class="video-grid">{cards}</div>
+    </div>
+  </section>
+
+  {cta_band()}
+</main>
+''' + footer() + SCRIPTS
+
 # ================================================================ CONTACT
 def page_contact():
     svc_options = "".join(f'<option value="{s["title"]}">{s["title"]}</option>' for s in SERVICES)
@@ -934,5 +1019,6 @@ write("services.html", page_services())
 for s in SERVICES:
     write(f"service-{s['slug']}.html", page_service(s))
 write("gallery.html", page_gallery())
+write("faq-videos.html", page_faq_videos())
 write("contact.html", page_contact())
 print("done.")
